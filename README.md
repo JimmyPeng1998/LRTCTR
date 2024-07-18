@@ -14,9 +14,10 @@ A Matlab solver for **l**ow-**r**ank **t**ensor **c**ompletion in **t**ensor **r
 
 ## Reference
 
-[Bin Gao](https://www.gaobin.cc/), [Renfeng Peng](https://jimmypeng1998.github.io/index.html), [Ya-xiang Yuan](http://lsec.cc.ac.cn/~yyx/index.html)
+[Bin Gao](https://www.gaobin.cc/), [Renfeng Peng](https://jimmypeng1998.github.io/), [Ya-xiang Yuan](http://lsec.cc.ac.cn/~yyx/index.html)
 
-- [Riemannian preconditioned algorithms for tensor completion via tensor ring decomposition](https://arxiv.org/abs/2302.14456)
+- Gao, B., Peng, R., & Yuan, Y. X. (2023). [Optimization on product manifolds under a preconditioned metric](https://arxiv.org/abs/2306.08873). arXiv preprint arXiv:2306.08873.
+- Gao, B., Peng, R., & Yuan, Y. X. (2024). [Riemannian preconditioned algorithms for tensor completion via tensor ring decomposition](https://link.springer.com/article/10.1007/s10589-024-00559-7). Computational Optimization and Applications, 88(2), 443-468.
 
 
 

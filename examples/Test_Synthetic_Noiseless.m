@@ -9,8 +9,9 @@ rng(16)
 solvers={'TR-RGD (Armijo)',... % Armijo backtracking linesearch
     'TR-RGD (RBB)',... % RBB2
     'TR-RGD (exact)',... % Exact linesearch
-    'TR-RCG (HS+)'};
-selectedSolver=[1 2 3 4];
+    'TR-RCG (HS+)',... % RCG with HS+ stepsize
+    'TR-(R)GN'}; % Gauss--Newton method
+selectedSolver=[1 2 3 4 5];
 
 %% Default Settings
 % Tensor size and true TR rank
@@ -103,6 +104,14 @@ for i=selectedSolver
                 'err',err,'tol',1e-8,'gradtol',1e-8,...
                 'delta',1e-15,'lambda',lambda,'const',const);
             [Xnew{4},duration{4},error{4},errorGamma{4}]=TR_RCG_HS(X,PA,Omega,SizeOmega,PAGamma,Gamma,SizeGamma,p,opts);
+            
+        case 5
+            fprintf('Running TR-(R)GN ... \n');
+            opts=struct('maxiter',maxIter,'maxTime',maxTime,...
+                'err',err,'tol',1e-8,'gradtol',1e-8,...
+                'delta',1e-15,'lambda',lambda,'const',const);
+            [Xnew{5},duration{5},error{5},errorGamma{5}]=TR_RGN(X,PA,Omega,SizeOmega,PAGamma,Gamma,SizeGamma,p,opts);
+            
     end
     
 end

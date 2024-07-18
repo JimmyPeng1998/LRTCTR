@@ -15,6 +15,7 @@ disp('Compiling mex files...')
 cd mex
 mex ComputeGradsAndPx_mex.c
 mex ComputePx_mex.c
+mex RGN_matrix_mex.c
 cd ..
 
 
