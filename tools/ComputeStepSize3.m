@@ -1,6 +1,32 @@
 function alpha=ComputeStepSize3(X,D,PA,r,d,dim,SizeOmega,Omega,lambda)
+%COMPUTESTEPSIZE3 Compute the exact line-search step for a third-order TR.
+%
+% Input:
+%   X: current TR tensor iterate (struct)
+%   D: search direction, stored as unfolded TR cores (cell array)
+%   PA: observed tensor entries on Omega (SizeOmega-by-1 vector)
+%   r: cyclic TR ranks (1-by-(d+1) vector)
+%   d: tensor order (must be 3)
+%   dim: tensor mode sizes (1-by-d vector)
+%   SizeOmega: number of observed entries (scalar)
+%   Omega: observed multi-indices (SizeOmega-by-d matrix)
+%   lambda: core regularization parameter (scalar)
+%
+% Output:
+%   alpha: exact line-search step size (scalar)
 % only for d=3!!!!!!
 % tic
+%
+% Reference: Riemannian preconditioned algorithms for tensor completion via
+%    tensor ring decomposition,
+%    Bin Gao, Renfeng Peng, and Ya-xiang Yuan,
+%    Computational Optimization and Applications, 88(2):443--468, 2024.
+%    https://doi.org/10.1007/s10589-024-00559-7
+%
+% Original author: Renfeng Peng, Jul. 05, 2023.
+% Last modified: Renfeng Peng, Aug. 05, 2026.
+%
+
 temp_Omega=Omega';
 temp=Unfolding2Slices(D,r,d,dim,SizeOmega,Omega);
 vec3=temp.Px;
@@ -81,7 +107,5 @@ alpha = ts(iarg);
 % end
 % y=X.core{d}(:,:,i(d))';
 % x=x(:)'*y(:);
-
-
 
 

@@ -1,4 +1,31 @@
 function X=TR_rand(r,d,dim,Omega,Gamma,SizeOmega,SizeGamma,lambda,PA,PAGamma)
+%TR_RAND Generate a random TR iterate and optionally evaluate its errors.
+%
+% Input:
+%   r: cyclic TR ranks (1-by-(d+1) vector)
+%   d: tensor order (scalar)
+%   dim: tensor mode sizes (1-by-d vector)
+%   Omega: training multi-indices (SizeOmega-by-d matrix)
+%   Gamma: test multi-indices (SizeGamma-by-d matrix)
+%   SizeOmega: number of training entries (scalar)
+%   SizeGamma: number of test entries (scalar)
+%   lambda: core regularization parameter (scalar)
+%   PA: optional training values (SizeOmega-by-1 vector)
+%   PAGamma: optional test values (SizeGamma-by-1 vector)
+%
+% Output:
+%   X: randomly initialized TR tensor and cached statistics (struct)
+%
+% Reference: Riemannian preconditioned algorithms for tensor completion via
+%    tensor ring decomposition,
+%    Bin Gao, Renfeng Peng, and Ya-xiang Yuan,
+%    Computational Optimization and Applications, 88(2):443--468, 2024.
+%    https://doi.org/10.1007/s10589-024-00559-7
+%
+% Original author: Renfeng Peng, Jul. 05, 2023.
+% Last modified: Renfeng Peng, Aug. 05, 2026.
+%
+
 X.r=r;
 X.d=d;
 X.n=dim;

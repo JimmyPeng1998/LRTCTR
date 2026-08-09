@@ -1,0 +1,4 @@
+TensorRingQuotient.m       General-order TR quotient-manifold factory.
+UniTensorRingQuotient.m    General-order uniform-TR quotient-manifold factory.
+
+Dependencies: Manopt and the validation routines in tools/.

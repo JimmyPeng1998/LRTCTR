@@ -1,4 +1,27 @@
 function X=Unfolding2Slices(x,r,d,dim,SizeOmega,Omega)
+%UNFOLDING2SLICES Convert unfolded cores to TR slices and evaluate samples.
+%
+% Input:
+%   x: unfolded TR cores (d-by-1 cell array)
+%   r: cyclic TR ranks (1-by-(d+1) vector)
+%   d: tensor order (scalar)
+%   dim: tensor mode sizes (1-by-d vector)
+%   SizeOmega: number of sampled entries (scalar)
+%   Omega: sampled multi-indices (SizeOmega-by-d matrix)
+%
+% Output:
+%   X: TR tensor with reshaped cores and sampled values (struct)
+%
+% Reference: Riemannian preconditioned algorithms for tensor completion via
+%    tensor ring decomposition,
+%    Bin Gao, Renfeng Peng, and Ya-xiang Yuan,
+%    Computational Optimization and Applications, 88(2):443--468, 2024.
+%    https://doi.org/10.1007/s10589-024-00559-7
+%
+% Original author: Renfeng Peng, Dec. 01, 2023.
+% Last modified: Renfeng Peng, Aug. 05, 2026.
+%
+
 X.r=r;
 X.d=d;
 X.n=dim;

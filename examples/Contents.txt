@@ -1,0 +1,7 @@
+Test_Synthetic_Noiseless.m          Noiseless test of the preconditioned algorithms and TR_RGN.
+Test_Synthetic_Noisy.m              Noisy test of the preconditioned algorithms and TR_RGN.
+Test_Synthetic_Quotient.m           Third-order test of TR_RGDQ and TR_RCGQ.
+Test_Synthetic_General_Quotient.m   Higher-order test of TR_RGDQ and TR_RCGQ.
+Test_Synthetic_Uniform_Quotient.m   Higher-order test of uTR_RGDQ and uTR_RCGQ.
+
+Dependencies: run install.m first; each example calls solvers/ and tools/ and produces a convergence plot.

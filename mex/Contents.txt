@@ -1,0 +1,7 @@
+ComputePx_mex.c                 Sampled TR values for orders three and four.
+ComputeGradsAndPx_mex.c         Sampled values and gradients for orders three and four.
+ComputePxGeneral_mex.c          Sampled TR values for general tensor order.
+ComputeGradsAndPxGeneral_mex.c  Sampled values and gradients for general tensor order.
+RGN_matrix_mex.c                Sampled values and coefficient matrix for TR_RGN.
+
+The corresponding .mex* files are compiled binaries. Run install.m to compile them for the current platform.

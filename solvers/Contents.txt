@@ -1,0 +1,28 @@
+Public solvers
+--------------
+TR_RGD_exact.m             Preconditioned TR-RGD with exact line search.
+TR_RGD_Armijo.m            Preconditioned TR-RGD with Armijo line search.
+TR_RGD_RBB2.m              Preconditioned TR-RGD with the RBB2 stepsize.
+TR_RCG_HS.m                Preconditioned TR-RCG with the Hestenes--Stiefel rule.
+TR_RGN.m                   Third-order Riemannian Gauss--Newton method.
+TR_RGDQ.m                  TR-RGD on the quotient manifold.
+TR_RCGQ.m                  TR-RCG on the quotient manifold.
+uTR_RGDQ.m                 Uniform-TR RGD on the quotient manifold.
+uTR_RCGQ.m                 Uniform-TR RCG on the quotient manifold.
+
+Internal routines
+-----------------
+TR_quotient_completion.m   Shared driver for TR_RGDQ and TR_RCGQ.
+uTR_quotient_completion.m  Shared driver for uTR_RGDQ and uTR_RCGQ.
+private/TR_compat_dispatch.m
+                            Accepts both simplified and legacy inputs.
+private/TR_RGD_exact_legacy.m
+                            Original implementation of TR_RGD_exact.
+private/TR_RGD_Armijo_legacy.m
+                            Original implementation of TR_RGD_Armijo.
+private/TR_RGD_RBB2_legacy.m
+                            Original implementation of TR_RGD_RBB2.
+private/TR_RCG_HS_legacy.m  Original implementation of TR_RCG_HS.
+private/TR_RGN_legacy.m     Original implementation of TR_RGN.
+
+Dependencies: tools/ and mex/. The quotient solvers also require manifolds/ and Manopt.

@@ -1,0 +1,43 @@
+Tensor-ring operations
+----------------------
+TR_sample.m                  Evaluates selected entries of a general TR tensor.
+uTR_sample.m                 Evaluates selected entries of a uniform TR tensor.
+TR_costgrad.m                Computes the sampled least-squares cost and gradient.
+TR_norm.m                    Computes the TR Frobenius norm without forming the full tensor.
+TR_rand.m                    Generates a random TR iterate and optional error statistics.
+TR_randn.m                   Generates a random TR tensor with Gaussian cores.
+GeneratingTR.m               Generates a synthetic TR tensor.
+
+Basic and reference implementations
+-----------------------------------
+getFullTR.m                  Forms the full tensor represented by TR cores.
+getFullError.m               Computes a full-tensor error for a fourth-order TR tensor.
+getTRvalue.m                 Evaluates one TR tensor entry.
+getTRgrad.m                  Contracts all sampled core slices except one.
+ComputeUneqk.m               Forms the complementary subchain unfoldings.
+ComputeUneqkTUneqk.m         Forms their Gram matrices.
+Unfolding2Slices.m           Converts unfolded cores to slices and evaluates samples.
+
+These routines follow the TR contractions directly and are useful for tensor
+generation, verification, and small problems. The solvers use MEX routines for
+frequent sampled computations and do not form the full tensor. getFullTR,
+getFullError, and getTRvalue are not part of the current solver workflow.
+
+Solver helpers
+--------------
+ComputeStepSize3.m           Exact line-search step for a third-order TR tensor.
+ComputeStepSize4.m           Exact line-search step for a fourth-order TR tensor.
+RGN_solver.m                 Sampled values and derivatives used by TR_RGN.
+TR_validate_dimensions.m     Checks tensor dimensions and cyclic TR ranks.
+TR_validate_tensor.m         Checks the public TR tensor representation.
+TR_validate_observations.m   Checks observed indices and values.
+makeOmegaSet_mod.m           Generates a set of random multi-indices.
+myind2sub.m                  Converts a linear index to a multi-index.
+mysub2ind.m                  Converts a multi-index to a linear index.
+
+Quotient helpers (quotient/)
+----------------------------
+TR_uniform_costgrad.m        Uniform-TR quotient cost and gradient.
+TR_uniform_relative_error.m  Uniform-TR quotient relative error.
+
+Dependencies: sampled computations use the routines in mex/. Quotient helpers are used by the quotient solvers.

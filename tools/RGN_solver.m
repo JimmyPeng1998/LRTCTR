@@ -1,4 +1,25 @@
 function [Px,G]=RGN_solver(X,PA,SizeOmega,temp_Omega)
+%RGN_SOLVER Evaluate sampled entries and gradients for the third-order RGN solver.
+%
+% Input:
+%   X: third-order TR tensor (struct)
+%   PA: observed tensor entries (SizeOmega-by-1 vector)
+%   SizeOmega: number of observed entries (scalar)
+%   temp_Omega: transposed observed indices in column-major form
+%
+% Output:
+%   Px: values of X at the observed indices (SizeOmega-by-1 vector)
+%   G: Euclidean gradients with respect to the three cores (cell array)
+%
+% Reference: Optimization on Product Manifolds under a Preconditioned Metric,
+%    Bin Gao, Renfeng Peng, and Ya-xiang Yuan,
+%    SIAM Journal on Matrix Analysis and Applications, 46(3):1816--1845, 2025.
+%    https://doi.org/10.1137/24M1643773
+%
+% Original author: Renfeng Peng, Jul. 18, 2024.
+% Last modified: Renfeng Peng, Aug. 05, 2026.
+%
+
 r=uint32(X.r);
 n=uint32(X.n);
 Px=zeros(SizeOmega,1);

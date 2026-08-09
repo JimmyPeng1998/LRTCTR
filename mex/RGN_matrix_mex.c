@@ -11,7 +11,13 @@
 % p: double
 % PA: SizeOmega-by-1 double
 %
-% Original author: Renfeng Peng, May 26th, 2023.
+% Reference: Optimization on Product Manifolds under a Preconditioned Metric,
+%    Bin Gao, Renfeng Peng, and Ya-xiang Yuan,
+%    SIAM Journal on Matrix Analysis and Applications, 46(3):1816--1845, 2025.
+%    https://doi.org/10.1137/24M1643773
+%
+% Original author: Renfeng Peng, May 26, 2023.
+% Last modified: Renfeng Peng, Aug. 05, 2026.
  *=================================================================*/
 
 // Column-major as in Matlab

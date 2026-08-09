@@ -5,6 +5,21 @@ clf
 % For reproducible results
 rng(16)
 
+% References:
+%   [1] Riemannian preconditioned algorithms for tensor completion via
+%       tensor ring decomposition,
+%       Bin Gao, Renfeng Peng, and Ya-xiang Yuan,
+%       Computational Optimization and Applications, 88(2):443--468, 2024.
+%       https://doi.org/10.1007/s10589-024-00559-7
+%   [2] Optimization on Product Manifolds under a Preconditioned Metric,
+%       Bin Gao, Renfeng Peng, and Ya-xiang Yuan,
+%       SIAM Journal on Matrix Analysis and Applications,
+%       46(3):1816--1845, 2025.
+%       https://doi.org/10.1137/24M1643773
+%
+% Original author: Renfeng Peng, Jul. 05, 2023.
+% Last modified: Renfeng Peng, Aug. 05, 2026.
+
 % Compared solvers
 solvers={'TR-RGD (Armijo)',... % Armijo backtracking linesearch
     'TR-RGD (RBB)',... % RBB2
@@ -39,8 +54,10 @@ Gamma = makeOmegaSet_mod( dim, SizeGamma);
 
 % Generating the true tensor A
 Atemp=TR_rand(r,d,dim,Omega,Gamma,SizeOmega,SizeGamma,lambda);
-A1=getFullTR(Atemp,dim,r,d);
-N=randn(dim);
+normA=TR_norm(Atemp);
+for i=1:d
+    Atemp.core{i}=Atemp.core{i}/nthroot(normA,d);
+end
 
 
 
@@ -50,21 +67,12 @@ N=randn(dim);
 epsilon=1e-6;
 
 
-A=A1/norm(A1(:))+epsilon*N/norm(N(:));
-if d==3
-    PA=A(sub2ind(dim,Omega(:,1),Omega(:,2),Omega(:,3)));
-else
-    PA=A(sub2ind(dim,Omega(:,1),Omega(:,2),Omega(:,3),Omega(:,4)));
-end
-if d==3
-    PAGamma=A(sub2ind(dim,Gamma(:,1),Gamma(:,2),Gamma(:,3)));
-else
-    PAGamma=A(sub2ind(dim,Gamma(:,1),Gamma(:,2),Gamma(:,3),Gamma(:,4)));
-end
+PA=TR_sample(Atemp,Omega)+epsilon*randn(SizeOmega,1)/sqrt(prod(dim));
+PAGamma=TR_sample(Atemp,Gamma)+epsilon*randn(SizeGamma,1)/sqrt(prod(dim));
 
 
 % Stats of results
-comparedSolvers=4;
+comparedSolvers=5;
 Xnew=cell(comparedSolvers,1);
 duration=cell(comparedSolvers,1);
 error=cell(comparedSolvers,1);
@@ -77,10 +85,9 @@ maxTime=200;
 
 % Initial guess
 X=TR_rand(r,d,dim,Omega,Gamma,SizeOmega,SizeGamma,lambda,PA,PAGamma);
-Xtemp=getFullTR(X,dim,r,d);
-normX=norm(Xtemp(:));
+normX=TR_norm(X);
 for i=1:d
-    X.core{i}=X.core{i}/nthroot(normX,3);
+    X.core{i}=X.core{i}/nthroot(normX,d);
 end
 
 
@@ -90,37 +97,37 @@ for i=selectedSolver
         case 1 % TR-RGD (Armijo)
             fprintf('Running TR-RGD (Armijo) ... \n');
             opts=struct('maxiter',maxIter,'maxTime',maxTime,...
-                'err',1e-12,'tol',1e-8,'gradtol',1e-8,...
+                'train_tol',1e-12,'tol',1e-8,'gradtol',1e-8,...
                 'delta',1e-15,'lambda',lambda,'const',const);
-            [Xnew{1},duration{1},error{1},errorGamma{1}]=TR_RGD_Armijo(X,PA,Omega,SizeOmega,PAGamma,Gamma,SizeGamma,p,opts);
+            [Xnew{1},duration{1},error{1},errorGamma{1}]=TR_RGD_Armijo(X,PA,Omega,PAGamma,Gamma,opts);
             
         case 2 % TR-RGD (RBB2)
             fprintf('Running TR-RGD (RBB2) ... \n');
             opts=struct('maxiter',maxIter,'maxTime',maxTime,...
-                'err',1e-12,'tol',1e-8,'gradtol',1e-8,...
+                'train_tol',1e-12,'tol',1e-8,'gradtol',1e-8,...
                 'delta',1e-15,'lambda',lambda);
-            [Xnew{2},duration{2},error{2},errorGamma{2}]=TR_RGD_RBB2(X,PA,Omega,SizeOmega,PAGamma,Gamma,SizeGamma,p,opts);
+            [Xnew{2},duration{2},error{2},errorGamma{2}]=TR_RGD_RBB2(X,PA,Omega,PAGamma,Gamma,opts);
             
         case 3 % TR-RGD (exact)
             fprintf('Running TR-RGD (exact) ... \n');
             opts=struct('maxiter',maxIter,'maxTime',maxTime,...
-                'err',1e-12,'tol',1e-8,'gradtol',1e-8,...
+                'train_tol',1e-12,'tol',1e-8,'gradtol',1e-8,...
                 'delta',1e-15,'lambda',lambda);
-            [Xnew{3},duration{3},error{3},errorGamma{3}]=TR_RGD_exact(X,PA,Omega,SizeOmega,PAGamma,Gamma,SizeGamma,p,opts);
+            [Xnew{3},duration{3},error{3},errorGamma{3}]=TR_RGD_exact(X,PA,Omega,PAGamma,Gamma,opts);
             
         case 4 % TR-RCG (HS+)
             fprintf('Running TR-RCG (HS+) ... \n');
             opts=struct('maxiter',maxIter,'maxTime',maxTime,...
-                'err',1e-12,'tol',1e-8,'gradtol',1e-8,...
+                'train_tol',1e-12,'tol',1e-8,'gradtol',1e-8,...
                 'delta',1e-15,'lambda',lambda,'const',const);
-            [Xnew{4},duration{4},error{4},errorGamma{4}]=TR_RCG_HS(X,PA,Omega,SizeOmega,PAGamma,Gamma,SizeGamma,p,opts);
+            [Xnew{4},duration{4},error{4},errorGamma{4}]=TR_RCG_HS(X,PA,Omega,PAGamma,Gamma,opts);
             
         case 5
             fprintf('Running TR-(R)GN ... \n');
             opts=struct('maxiter',maxIter,'maxTime',maxTime,...
-                'err',1e-12,'tol',1e-8,'gradtol',1e-8,...
+                'train_tol',1e-12,'tol',1e-8,'gradtol',1e-8,...
                 'delta',1e-15,'lambda',lambda,'const',const);
-            [Xnew{5},duration{5},error{5},errorGamma{5}]=TR_RGN(X,PA,Omega,SizeOmega,PAGamma,Gamma,SizeGamma,p,opts);
+            [Xnew{5},duration{5},error{5},errorGamma{5}]=TR_RGN(X,PA,Omega,PAGamma,Gamma,opts);
             
     end
     
@@ -156,9 +163,6 @@ xlabel('Time (s)')
 ylabel('Test error')
 set(gca,'FontSize',16)
 set(gca,'YTick',10.^(log10(epsilon):1:0))
-
-
-
 
 
 
