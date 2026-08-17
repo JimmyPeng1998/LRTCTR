@@ -47,9 +47,7 @@ Exp4_movielens
 
 Each script loads the parent LRTCTR package through `install.m`. Run the
 matching `*_results.m` script separately when only an existing MAT result
-needs to be plotted. For Experiment 2, setting `LRTCTR_EXPS_LOCAL=1` selects
-the intermediate-size configuration, and `LRTCTR_EXPS_PLOT_ONLY=1` plots an
-existing result without rerunning the experiment.
+needs to be plotted.
 
 The phase-plot commands in `Exp3_phase_results.m` are intentionally commented
 out. Uncomment them only when those plots are needed.
