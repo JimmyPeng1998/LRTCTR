@@ -44,7 +44,8 @@ if ~isfield(opts, 'minstepsize'); opts.minstepsize = eps;  end
 % the rest of LRTCTR, so no order-dependent reshaping is needed here.
 M = TensorRingQuotient(n, r);
 problem.M = M;
-problem.costgrad = @costgrad;
+problem.cost = @cost;
+problem.grad = @gradient;
 
 options.maxiter = opts.maxiter;
 options.maxtime = opts.maxTime;
@@ -86,10 +87,15 @@ else
     errorGamma = [];
 end
 
-    function [cost, grad] = costgrad(Xcurrent)
-        % Evaluate all sampled contractions and all d core gradients without
-        % constructing the full tensor.
-        [cost, eucGrad] = TR_costgrad(makeTR(Xcurrent), Omega, PA);
+    function costValue = cost(Xcurrent)
+        % Evaluate the objective alone during line-search trial steps.
+        residual = sampledValues(Xcurrent, Omega)-PA;
+        costValue = 0.5*(residual'*residual)/p;
+    end
+
+    function grad = gradient(Xcurrent)
+        % Evaluate all d core gradients only when Manopt requests them.
+        [~, eucGrad] = TR_costgrad(makeTR(Xcurrent), Omega, PA);
         grad = M.proj(Xcurrent, eucGrad);
     end
 

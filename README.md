@@ -68,6 +68,12 @@ Quotient-manifold algorithms [3]:
 
 Run `install.m` once, then run an example from the `examples` directory.
 
+## Paper Experiments
+
+Scripts for reproducing the numerical experiments in the TR quotient paper
+are provided in [`TR_Quotient_Exps`](TR_Quotient_Exps). See the README in
+that directory for experiment descriptions, runtime notes, and data setup.
+
 ## References
 
 1. Riemannian preconditioned algorithms for tensor completion via tensor

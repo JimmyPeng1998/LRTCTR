@@ -77,7 +77,8 @@ if ~isfield(opts, 'verbosity');   opts.verbosity = 2;       end
 if ~isfield(opts, 'minstepsize'); opts.minstepsize = eps;   end
 
 problem.M = M;
-problem.costgrad = @costgrad;
+problem.cost = @cost;
+problem.grad = @gradient;
 
 options.maxiter = opts.maxiter;
 options.maxtime = opts.maxTime;
@@ -118,8 +119,15 @@ else
     errorGamma = [];
 end
 
-    function [cost, grad] = costgrad(Xcurrent)
-        [cost, eucGrad] = TR_uniform_costgrad( ...
+    function costValue = cost(Xcurrent)
+        % Evaluate the objective alone during line-search trial steps.
+        residual = sampledValues(Xcurrent, Omega)-PA;
+        costValue = 0.5*(residual'*residual)/p;
+    end
+
+    function grad = gradient(Xcurrent)
+        % Evaluate the shared-core gradient only when Manopt requests it.
+        [~, eucGrad] = TR_uniform_costgrad( ...
             Xcurrent, Omega, PA, p, d, n, r);
         grad = M.proj(Xcurrent, eucGrad);
     end
